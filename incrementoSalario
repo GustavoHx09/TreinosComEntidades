@@ -1,0 +1,122 @@
+// APPLICATION //
+
+package application;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
+
+import javax.swing.text.Position;
+
+import entities.Employee;
+
+public class Program {
+	public static void main(String[] args) {
+
+		Scanner sc = new Scanner(System.in);
+
+		List<Employee> list = new ArrayList<>();
+
+		System.out.println("Quantos funcionários serão digitados? ");
+		int n = sc.nextInt();
+
+		for (int i = 0; i < n; i++) {
+			System.out.println();
+			System.out.println("Funcionário #" + (i + 1) + ":");
+			System.out.println("Id: ");
+			Integer id = sc.nextInt();
+			sc.nextLine();
+			System.out.println("Nome: ");
+			String name = sc.nextLine();
+			System.out.println("Salário: ");
+			Double salary = sc.nextDouble();
+
+			Employee emp = new Employee(id, name, salary);
+
+			list.add(emp);
+		}
+		System.out.println();
+		System.out.println("Entre com o Id do funcionário que terá o aumento de salário: ");
+		int ids = sc.nextInt();
+		Integer pos = position(list, ids);
+		if (pos == null) {
+			System.out.println("O Id do funcionário não foi encontrado!");
+		} else {
+			System.out.println("Qual a porcentagem a ser aumentada?");
+			Double percent = sc.nextDouble();
+			list.get(pos).increaseSalary(percent);
+		}
+		System.out.println();
+		System.out.println("Lista de funcionários:");
+		for(Employee emp : list) {
+			System.out.println(emp);
+		}
+
+		sc.close();
+	}
+
+	public static Integer position(List<Employee> list, int id) {
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i).getId() == id) {
+				return i;
+			}
+		}
+		return null;
+	}
+}
+
+
+// ENTITIES //
+
+
+package entities;
+
+public class Employee {
+
+	private Integer id;
+	private String name;
+	private Double salary;
+	
+	public Employee () {
+	}
+
+	public Employee(Integer id, String name, Double salary) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.salary = salary;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Double getSalary() {
+		return salary;
+	}
+
+	public void setSalary(Double salary) {
+		this.salary = salary;
+	}
+	
+	public void increaseSalary(double percentage) {
+		salary += salary * percentage / 100.0;
+	}
+	
+	public String toString() {
+		return id + ", " + name + ", " + String.format("%.2f", salary);
+	}
+}
